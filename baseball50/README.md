@@ -17,7 +17,7 @@ The purpose of this project was to replicate a baseball fantasy simulation websi
 **ACKNOWLEDGEMENTS**
 2024 MLB Stats:
 https://www.rotowire.com/baseball/stats.php
-Problem Set 9 - Finance Pset
+Problem Set 9 - Finance
 
 **HOW TO PLAY THE GAME:**
 
