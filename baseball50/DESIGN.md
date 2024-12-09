@@ -1,30 +1,27 @@
-YOUTUBE LINK:
+The format of our website relies heavily on the features we wanted to implement, with redirects depending on the actions certain buttons would make. We started with a general layout of a website that we adapted features from the finance pset: a login, a registration page, a homepage (which shows a roster of the players). We later added pages for choosing a team, an error message, viewing free agents, viewing the rules of the game, and searching for players.
 
-SET UP:
-Baseball50-by Ajax Fu, Hyunsoo Lee, and Rachel Chan
+We used a layout.html file which includes a navigation bar to the other pages on the website. This navigation bar also shows the current cash which the user owns for convenience. This means that a variable “cash” must be passed to each webpage which extends layout.html (which is nearly all of the pages except for login and register). That is why at the top of most route functions, we recalculate the cash that the current user owns with a SQL query. We decided to do this instead of keeping cash as a global variable, since that could potentially cause conflicts with the cash values of other users, and since it must be recalculated so often whenever any transactions happen.
 
-INSTALLATION INSTRUCTIONS:
-In the terminal, copy and paste the following lines
-git clone https://github.com/Weldducks/baseball50.git
-cd baseball50
-Follow this link to install Python for pip: https://www.geeksforgeeks.org/how-to-install-pip-on-windows/#
+Since there are only 30 MLB teams, we decided that it would be easier for our project to hardcode a list of dictionaries (accessible globally), where each dictionary represents an MLB team, with fields specifying name, location, and team abbreviation. This helps us display team names and connect the team names to team abbreviations, since the teams for the players in our database are named by abbreviation.
 
-Copy and paste into terminal to download all necessary dependencies
-pip install -r requirements.txt
+Specific functions/pages:
 
-PREMISE OF THE WEBSITE:
-The purpose of this project was to replicate a baseball fantasy simulation website. The user would be able to login into their unique account and recruit players either by choosing their starter team, choosing a free agent available through a randomized function, or through trade with other players. Some unique features that we included was a randomized free agent page to recruit players that have not been owned, a trade system between players, and a simulations page
+Login, register, and logout are roughly the same as implemented in Finance, where we use a table in our database called users, with columns id, username, and hashed_password. When a user registers, their password is stored through a hash function with the werkzeuug.security library.
 
-ACKNOWLEDGEMENTS
-(include database information and frameworks used here)
+The homepage (route: “/“) displays the current roster of the logged in user. We accomplished this through two SQL queries: one gathers all the batters that the user owns, and one gathers all the pitchers that the user owns. Through the html and css, we display these players in Bootstrap cards.
 
-HOW TO PLAY THE GAME:
+Search function: The search route (route: “/search”) can search up current players known in the MLB database. In the search function, when a player name is searched, two SQL queries are run. The first returns the batters (and their stats) that match the search, and the second returns the pitchers (and their stats) that match the search. These two query results are joined together to make a list of dictionaries that represent each player match. These players and their stats are then displayed in the searched.html page.
 
-Create an account through the register page in order to have full access. If the user has a specific account with the interface already, then refer to the login page for logging in once more. After logging in, the user will be redirected to the baseball50 page, which currently displays the batters and pitchers you own. Going to the rules page, this explains the main objective of the game, where you should recruit players onto your team to simulate for multiple seasons. In order to do that, you must choose a starter team, where you can click onto the Choose Team page. After choosing a team, you will be redirected to the baseball50 page where a list of the players will be displayed. Selling certain players with a value to them will increase the amount of cash in your wallet, which can be used to recruit players in the Free Agents page.
+Trade function: You can also trade with other players, which proved to be the most difficult part of our project. It was very difficult because I had to create another roster that corresponds with the username that the user inputs. Furthermore, I had to create another database called trade requests where we store the data if there was any trade requests that happened. First, we created an HTML where the user inputs whatever username that they wish to trade with along with the player offered. Afterwards, I created another HTML page where based on the user’s input in the previous HTML, it shows the roster of the other users in a dropdown menu. Then, I created a trade_requests HTML where the user who received the request could either accept or reject the offer. It required various SQL queries, inserting data into the database, and various HTML pages.
 
-Pressing on the Free Agents page in the navigation bar will show a list of batters and pitchers that are not on your roster that are randomly generated, with various prices to get them on your roster. With the money that you start with and any that you gained from selling your selected team, you can recruit stronger players.
+Simulation function: The simulation function works by writing the list of current owned pitchers and current owned batters into two separate CSV files. Then, these CSV files are fed into a function that prompts Gemini AI to make its prediction based on the current owned pitchers and batters, and their stats. The simulation is also run to simulate the inputted year.
 
-Pressing the trade page in the navigation bar, you can propose a trade with another user for certain players.
+One of the design obstacles that we made was understanding how to use the baseball database with all players and how to account for their numbers. As pitchers and batters have different statistics, they were on completely different tables that required further organization. We decided to assign all players a unique ID in numerical order to keep it simple rather than having to search a player by the status of a batter or pitcher and the number from the table. 
 
-To finally play the game, press the simulation button and input the year you want to simulate, where 
+A column that depicted true/false for a player being owned would be simple for us to keep track of in our app route for free agent recruits. This boolean on whether or not a player was owned would then be used to display the user’s roster which would be redirected back to the baseball50 initial page. However, this made it difficult to implement multiple users as all users would be displayed a roster that included all the players that all users have bought. Instead, we are using an entirely new table that includes two columns (holdings table)→player_id of the baseball player owned and user_id of the user that owns the player. After a user effectively buys a player, whether from choosing a team in the beginning, trading, or taking on a free agent, their roster is displayed on the baseball50 using a series of SQL commands. When a user sells an player, a SQL command is run that will delete the row which specifies that specific user and that specific player in the holdings column, so that the database reflects that the specific user no longer owns the specific player.
 
+
+
+In using Gemini, we eliminated the need to pay for the service and decided to reduce the creativity to create concrete answers for our win/loss rate. Furthermore, we hard-coded the program in our prompt to output the answer through a specific prompt and decreased the temperature from a typical creative message(where temperature levels for Gemini AI range from 0.o to 2.0) and had top-P and top-K levels at .95 and 64 respectively.
+
+As previously mentioned, pitchers and batters had different statistics to approach. GeminiAI had different file formats to read from, so we chose to separate this into two CSV files so that GeminiAI would be able to comprehend the data. From there, we provided a prompt that included our txt files for the AI, so that we could specify for the AI to read pitcher statistics and batter statistics separately for its prediction.
