@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Choose Your MLB Team
+{% endblock %}
+
+{% block main %}
+
+    <body>
+        <div class="team-selection-container">
+            <header>
+                <h1>Select Your MLB Team</h1>
+                <p>Choose a team to set as your roster.</p>
+            </header>
+
+            <section class="teams-list">
+                <h2>Click on a Team</h2>
+                <div class="teams">
+                <!-- Dynamically inserted team logos or names -->
+                    {% for team in teams %}
+                        <div class="team-card">
+                            <img src="/static/images/logos/{{ team.name }}.png" alt="{{ team.name }} logo">
+                            <h3>{{ team.location }} {{team.name }}</h3>
+                            <form action="/chooseteam" method="POST">
+                                <button name="team" value="{{ team.abbr }}" class="select-team-btn">Select Team</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <footer>
+                <p> Baseball50 </p>
+            </footer>
+        </div>
+    </body>
+{% endblock %}

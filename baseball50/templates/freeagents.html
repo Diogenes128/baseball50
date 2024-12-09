@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Free Agents
+{% endblock %}
+
+{% block main %}
+    <div class="free-agent-container">
+        <header>
+            <h1>Free Agent Market</h1>
+            <p style="font-size: 24px;">Your current balance: <span id="user-money">{{ (cash | float) | usd }}</span></p>
+        </header>
+
+        <section class="free-agents">
+            <div class="free-agents-batter">
+                <h2>Available Free Agents: Batters</h2>
+                <div class="player-cards">
+                    {% for freebatter in freebatters %}
+                        <div class="player-card">
+                            <div class="player-card-header">
+                                <h3>{{ freebatter.Name }}</h3>
+                            </div>
+                            <div class="player-stats">
+                                <p><strong>Position:</strong> {{ freebatter.Pos }}</p>
+                                <p><strong>Age:</strong> {{ freebatter.Age }}</p>
+                                <p><strong>Batting Avg:</strong> {{ freebatter.AVG }}</p>
+                                <p><strong>Hits:</strong> {{ freebatter.H }}</p>
+                                <p><strong>Homeruns:</strong> {{ freebatter.HR }}</p>
+                                <p><strong>Value:</strong> {{ ((freebatter.AVG | float) * 10000 + 2000) | usd }}</p>
+                            </div>
+                            <form action="/buy" method="POST">
+                                <button class="buy-btn" name="player_id" value="{{ freebatter.id }}">Buy</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="free-agents-pitcher">
+                <h2>Available Free Agents: Pitchers</h2>
+                <div class="player-cards">
+                    {% for freepitcher in freepitchers %}
+                        <div class="player-card">
+                            <div class="player-card-header">
+                                <h3>{{ freepitcher.Name }}</h3>
+                            </div>
+                            <div class="player-stats">
+                                <p><strong>Age:</strong> {{ freepitcher.Age }}</p>
+                                <p><strong>ERA:</strong> {{ freepitcher.ERA }}</p>
+                                <p><strong>Wins:</strong> {{ freepitcher.W }}</p>
+                                <p><strong>Losses:</strong> {{ freepitcher.L }}</p>
+                                <p><strong>WHIP:</strong> {{ freepitcher.WHIP }}</p>
+                                <p><strong>Value:</strong> {{ ((freepitcher.ERA | float) * 1000) | usd }}</p>
+                            </div>
+                            <form action="/buy" method="POST">
+                                <button class="buy-btn" name="player_id" value="{{ freepitcher.id }}">Buy</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Baseball50. Buy your favorite players!</p>
+        </footer>
+    </div>
+{% endblock %}

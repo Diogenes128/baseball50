@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Propose Trade
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <h1>Propose a Trade</h1>
+
+        <form method="POST" action="/trade">
+            <div class="form-group">
+                <label for="username">Target User:</label>
+                <input type="text" id="username" name="username" placeholder="Enter username" required>
+            </div>
+
+            <div class="form-group">
+                <label for="offered_player_id">Your Players:</label>
+                <select id="offered_player_id" name="offered_player_id" required>
+                    <option value="" disabled selected>Select a player to offer</option>
+                    {% for player in roster %}
+                        <option value="{{ player.id }}">{{ player.Name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Next</button>
+        </form>
+    </div>
+{% endblock %}

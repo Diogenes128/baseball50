@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Trade Requests
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <h1>Your Incoming Trade Requests</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Offered Player</th>
+                    <th>Requested Player</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in trade_requests %}
+                    <tr>
+                        <td>{{ request.offered_player_name }}</td>
+                        <td>{{ request.requested_player_name }}</td>
+                        <td>
+                            <form method="POST" action="/trade_requests">
+                                <input type="hidden" name="trade_id" value="{{ request.id }}">
+                                <button type="submit" name="action" value="accept" class="btn btn-success">Accept</button>
+                                <button type="submit" name="action" value="reject" class="btn btn-danger">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

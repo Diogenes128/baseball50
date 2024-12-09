@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Your Fantasy Team Roster
+{% endblock %}
+
+{% block main %}
+
+    <body>
+        <div class="roster-container">
+            <header>
+                <h1>Your Fantasy Team Roster</h1>
+                <p>View the players on your team and their stats.</p>
+            </header>
+
+            <section class="team-section">
+            <!-- Batters -->
+                <div class="team-category">
+                    <h2>⚾ Batters</h2>
+                    <div class="player-cards">
+                        {% for batter in batters %}
+                            <div class="player-card">
+                                <div class="player-card-header">
+                                    <h3>{{ batter.Name }}</h3>
+                                </div>
+                                <div class="player-stats">
+                                    <p><strong></strong>Position: </strong>{{ batter.Pos }}</p>
+                                <p><strong>Age:</strong> {{ batter.Age }}</p>
+                                <p><strong>Batting Avg:</strong> {{ batter.AVG }}</p>
+                                <p><strong>Hits:</strong> {{ batter.H }}</p>
+                                <p><strong>Homeruns:</strong> {{ batter.HR }}</p>
+                                <p><strong>Value:</strong> {{ ((batter.AVG | float) * 10000 + 2000)| usd }}</p>
+                            </div>
+
+                            <form action="/sellbatter" method="POST">
+                                <button class="sell-btn" name="player_id" value="{{ batter.id }}">Sell</button>
+                            </form>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            <!-- Pitchers -->
+                <div class="team-category">
+                    <h2>⚾ Pitchers</h2>
+                    <div class="player-cards">
+                        {% for pitcher in pitchers %}
+                            <div class="player-card">
+                                <div class="player-card-header">
+                                    <h3>{{ pitcher.Name }}</h3>
+                                </div>
+                                <div class="player-stats">
+                                    <p><strong>Age:</strong> {{ pitcher.Age }}</p>
+                                    <p><strong>ERA:</strong> {{ pitcher.ERA }}</p>
+                                    <p><strong>Wins:</strong> {{ pitcher.W }}</p>
+                                    <p><strong>Losses:</strong> {{ pitcher.L }}</p>
+                                    <p><strong>WHIP:</strong> {{ pitcher.WHIP }}</p>
+                                    <p><strong>Value:</strong> {{ ((pitcher.ERA | float) * 1000) | usd}}</p>
+                                </div>
+
+                                <form action="/sellpitcher" method="POST">
+                                    <button class="sell-btn" name="player_id" value="{{ pitcher.id }}">Sell</button>
+                                </form>
+
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <p>&copy; 2024 Baseball50 | Your Baseball Team</p>
+            </footer>
+        </div>
+
+    </body>
+{% endblock %}

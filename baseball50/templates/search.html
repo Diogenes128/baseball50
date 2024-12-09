@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Player Search
+{% endblock %}
+
+{% block main %}
+
+    <body>
+        <div class="container">
+            <h1>Baseball Player Search</h1>
+            <p>Search for baseball players and view their stats like AVG, ERA, Home Runs, and RBIs!</p>
+
+        <!-- Search Pitchers Section -->
+            <section class="search-section">
+                <header>
+                    <h2>Search Player</h2>
+                </header>
+                <div class="search-bar">
+                    <form action="/search" method="POST">
+                        <input type="text" name="player" id="search-input" placeholder="Enter player's full name">
+                        <button id="search-pitcher-btn">Search</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </body>
+{% endblock %}

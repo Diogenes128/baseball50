@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Baseball Player Search
+{% endblock %}
+
+{% block main %}
+
+    <body>
+        <div class="container">
+            <h1>Baseball Player Search</h1>
+            <p>Search for baseball players and view their stats like AVG, ERA, Home Runs, and RBIs!</p>
+
+        <!-- Search Pitchers Section -->
+            <section class="search-section">
+                <header>
+                    <h2>Search Player</h2>
+                </header>
+                <div class="search-bar">
+                    <form action="/search" method="POST">
+                        <input type="text" name="player" id="search-input" placeholder="Enter player's full name">
+                        <button id="search-pitcher-btn">Search</button>
+                    </form>
+                </div>
+                <div id="pitcher-results">
+                    <div class="player-cards">
+                        {% for match in matches %}
+                            <div class="player-card">
+                                <div class="player-card-header">
+                                    <h3>{{ match.Name }}</h3>
+                                </div>
+                                <div class="player-stats">
+                                    {% if match.id > 999 %}
+                                        <p><strong>Age:</strong> {{ match.Age }}</p>
+                                        <p><strong>ERA:</strong> {{ match.ERA }}</p>
+                                        <p><strong>Wins:</strong> {{ match.W }}</p>
+                                        <p><strong>Losses:</strong> {{ match.L }}</p>
+                                        <p><strong>WHIP:</strong> {{ match.WHIP }}</p>
+                                        <p><strong>Value:</strong> {{ ((match.ERA | float) * 1000) | usd }}</p>
+                                    {% else %}
+                                        <p><strong>Position:</strong> {{ match.Pos }}</p>
+                                        <p><strong>Age:</strong> {{ match.Age }}</p>
+                                        <p><strong>Batting Avg:</strong> {{ match.AVG }}</p>
+                                        <p><strong>Hits:</strong> {{ match.H }}</p>
+                                        <p><strong>Home Runs:</strong> {{ match.HR }}</p>
+                                        <p><strong>Value:</strong> {{ ((match.AVG | float) * 10000 + 2000) | usd }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </body>
+{% endblock %}

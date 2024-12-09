@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Select Player to Request
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <h1>Select a Player from {{ username }}'s Team</h1>
+
+        <form method="POST" action="/trade_roster">
+        <!-- target_user_id, offered_player_id, requested_player_id -->
+
+            <input type="hidden" name="username" value="{{ username }}">
+            <input type="hidden" name="offered_player_id" value="{{ offered_player_id }}">
+            <input type="hidden" name="target_user_id" value="{{ other_user_id }}">
+
+
+            <div class="form-group">
+                <label for="requested_player_id">Their Players:</label>
+                <select id="requested_player_id" name="requested_player_id" required>
+                    <option value="" disabled selected>Select a player</option>
+                    {% for player in other_user_roster %}
+                        <option value="{{ player.id }}">{{ player.Name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success">Request Trade</button>
+        </form>
+    </div>
+{% endblock %}

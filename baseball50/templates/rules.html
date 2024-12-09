@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Rules
+{% endblock %}
+
+{% block main %}
+
+    <body>
+        <header>
+            <h1>Welcome to Baseball Rules</h1>
+            <p>Learn the fundamentals of baseball</p>
+        </header>
+
+        <section class="rules-section">
+            <div class="rule-card" onclick="showRuleDetails(1)">
+                <img src="/static/images/field.jpg" alt="Baseball Field">
+                <h2>The Field</h2>
+                <p>There are 9 field players in baseball. They are responsible for catching and getting the batter out after the pitcher throws the ball.</p>
+            </div>
+            <div class="rule-card" onclick="showRuleDetails(2)">
+                <img src="/static/images/bat.png" alt="Baseball Bat">
+                <h2>Baseball50</h2>
+                <p>In this game, you can buy and sell your player roster. After finalizing your roster, simulate your season. The more wins you get, the more moey you'll receive for your next season!</p>
+            </div>
+            <div class="rule-card" onclick="showRuleDetails(3)">
+                <img src="/static/images/players.jpeg" alt="Baseball Players">
+                <h2>The Goal</h2>
+                <p>You're goal is to maximize the money you have. But remember, you have to spend your money on players to get more later!!</p>
+            </div>
+            <div class="rule-card" onclick="showRuleDetails(4)">
+                <img src="/static/images/ball.jpg" alt="Baseball">
+                <h2>The Teams</h2>
+                <p>You can select any team you want. But, we all know that the San Francisco Giants are the best.</p>
+            </div>
+        </section>
+
+        <section id="rule-details" class="hidden">
+            <button class="close-btn" onclick="hideRuleDetails()">✖ Close</button>
+            <div id="rule-content">
+            <!-- Rule content will be dynamically loaded here -->
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 Baseball Enthusiasts. Learn the game. Play the game.</p>
+        </footer>
+
+        <script>
+        // Interactive functionality to load rule details
+            const ruleDetails = {
+                1: `<h2>The Field</h2><p>A baseball field has four bases forming a diamond shape: first, second, third, and home plate. The pitcher's mound is at the center, and outfielders guard the farthest areas.</p>`,
+                2: `<h2>The Equipment</h2><p>Players use bats to hit the ball, gloves to catch it, and helmets for protection. The ball is small, white, and tightly wound for precision throws and hits.</p>`,
+                3: `<h2>The Players</h2><p>There are nine players per team, including pitchers, catchers, infielders, and outfielders. Each has a specific role in offense and defense.</p>`,
+                4: `<h2>The Rules</h2><p>Baseball is played over nine innings. Teams score by running bases and touching home plate after hitting the ball within the fair area.</p>`,
+            };
+
+            function showRuleDetails(ruleId) {
+                const detailsSection = document.getElementById("rule-details");
+                const contentDiv = document.getElementById("rule-content");
+                contentDiv.innerHTML = ruleDetails[ruleId];
+                detailsSection.classList.remove("hidden");
+            }
+
+            function hideRuleDetails() {
+                document.getElementById("rule-details").classList.add("hidden");
+            }
+        </script>
+    </body>
+{% endblock %}
