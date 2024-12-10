@@ -5,7 +5,7 @@ CS50 final project: baseball50
 
 **INSTALLATION INSTRUCTIONS:**
 In the terminal, copy and paste the following lines
-git clone https://github.com/Weldducks/baseball50.git
+git clone https://github.com/Diogenes128/baseball50.git
 cd baseball50
 Follow this link to install Python for pip: https://www.geeksforgeeks.org/how-to-install-pip-on-windows/#
 
